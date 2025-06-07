@@ -13,6 +13,9 @@ class PosnetService
     {
         if (!in_array($request->type, ['Visa', 'AMEX']))
             return new JsonResponse('type error', 422);
+        $number = abs((int) $request->number); 
+        if (!strlen((string) $number) === 8)
+            return new JsonResponse('card number error', 422);
         return new JsonResponse(Card::create($request->all()), 201);
     }
 
