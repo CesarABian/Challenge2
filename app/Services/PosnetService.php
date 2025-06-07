@@ -32,6 +32,8 @@ class PosnetService
         $card = Card::where('number', $array['number']);
         if (!$card)
             return new JsonResponse('card not found', 422);
+        if ($amount > $card->limit)
+            return new JsonResponse('limit exceed', 422);
         $array['name'] = $card->name . ' ' . $card->lastname;
         $array['installment_amount'] = $amount / $request->installments;
         return new JsonResponse(Ticket::create($request->all()), 201);
